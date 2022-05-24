@@ -3,6 +3,7 @@ import pandas as pd
 import itertools
 
 from .statistics import r
+from .mask_iter import MaskIter
 
 
 def __get_X_Y_L__(X, Y=None):
@@ -108,7 +109,7 @@ def hellwig_h(r0=None, R=None, X=None, Y=None, J_idx=None, J_cols=None, J_mask=N
     return h
 
 
-def helwig_subset(r0=None, R=None, X=None, Y=None, return_all_subsets=False, return_as_comb=False):
+def helwig_subset(r0=None, R=None, X=None, Y=None, return_all_subsets=False, return_as_comb=False, max_subset_size=None):
     # r0 and R - respectively: a vector and a matrix from Hellwig's method,
     # X - a matrix with a dependent X[,0] and independent X[,1:].
     # Only one of the pairs should be provided: (r0, R) or (X, Y).
@@ -122,10 +123,7 @@ def helwig_subset(r0=None, R=None, X=None, Y=None, return_all_subsets=False, ret
     subsets_res = []
     
     is_first = True
-    for comb in itertools.product([0, 1], repeat = len(r0)):
-        if is_first:
-            is_first = False
-            continue
+    for comb in MaskIter(len(r0), min_ones = 1, max_ones = max_subset_size):
         h, H = hellwig_h(r0=r0, R=R, J_mask=comb, return_H=True)
         subset = comb if return_as_comb else R.columns[np.where(comb)]
         subsets_res.append({"H": H, "h": h, "subset": subset})

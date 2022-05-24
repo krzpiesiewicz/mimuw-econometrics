@@ -1,5 +1,6 @@
 data/original_data
 *.html
+konsultanci.xlsx
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
