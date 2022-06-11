@@ -1,6 +1,7 @@
 data/original_data
 *.html
 konsultanci.xlsx
+jaworski_rozne.xls
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

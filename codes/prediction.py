@@ -46,7 +46,7 @@ class OLS(PredictionModel):
 
 
 def RSS(Y_true, Y_pred):
-    return Y_true.T @ Y_pred
+    return (Y_true - Y_pred).T @ (Y_true - Y_pred)
     
     
 def evaluate(model, X, Y, steps, eval_intv, score, jump=1):
@@ -63,6 +63,7 @@ def evaluate(model, X, Y, steps, eval_intv, score, jump=1):
         end = eval_intv.shifted_idx(begin, shift=steps)
         
     return np.mean(scores)
+
 
 def get_one_step_predictions(model, X, Y, forecast_intv):
     model.fit(forecast_intv.prev_view(X), forecast_intv.prev_view(Y))
